@@ -1,0 +1,23 @@
+version: "3.2"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+
+  application:
+    image: order-service
+    container_name: order-service-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 7777:7634
+    restart: always
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - rabbitmq
